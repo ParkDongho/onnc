@@ -29,7 +29,7 @@ $ docker pull onnc/onnc-community
 
 ### 2.2. Getting the ONNC source codes
 
-The latest ONNC source code is available on GitHub. Follow these commands to download the source code.
+최신 ONNC 소스 코드는 GitHub에서 사용할 수 있습니다. 소스 코드를 다운로드하려면 다음 명령을 따르십시오.
 
 ```console
 $ git clone https://github.com/ONNC/onnc.git
@@ -121,7 +121,7 @@ onnc@705b08cf8a7d:/onnc/onnc-umbrella/build-normal$
 
 ### 2.5. Invoking the new backend
 
-The following commands demonstrate processing the AlexNet model with the new backend. 
+다음 명령은 새 백엔드로 AlexNet 모델을 처리하는 방법을 보여줍니다.
 
 ```console
 // Do the following within the Docker prompt.
@@ -131,9 +131,9 @@ $ cd /onnc/onnc-umbrella/build-normal/
 $ ./tools/onnc/onnc /models/bvlc_alexnet/model.onnx -mquadruple foo
 ```
 
-Option `-mquadruple foo`<sup id="quadruple-1">[1](#quadruple)</sup> is for invoking the new backend Foo. Use all lowercase letters as the backend name in this option. 
+`-mquadruple foo`<sup id="quadruple-1">[1](#quadruple)</sup> 옵션은 새로운 백엔드 Foo를 호출하기 위한 것입니다. 이 옵션에서 백엔드 이름으로 모두 소문자를 사용하십시오.
 
-The following console output shows the execution result of the new backend. It prints information of the operators in the AlexNet model. 
+다음 콘솔 출력은 새 백엔드의 실행 결과를 보여줍니다. AlexNet 모델의 연산자 정보를 출력합니다.
 
 ```console
 onnc@705b08cf8a7d:/onnc/onnc-umbrella/build-normal$ ./tools/onnc/onnc /models/bvlc_alexnet/model.onnx -mquadruple foo
@@ -167,7 +167,7 @@ onnc@705b08cf8a7d:/onnc/onnc-umbrella/build-normal$
 
 ## 3. Files of the new backend
 
-By following the commands in the previous section, we derive a new backend Foo and all the files are created under `/onnc/onnc/lib/Target/Foo`. Table 1 describes the files in the created folder. 
+이전 섹션의 명령을 따라 새로운 백엔드 Foo를 파생시키고 모든 파일은 `/onnc/onnc/lib/Target/Foo` 아래에 생성됩니다. 표 1은 생성된 폴더의 파일을 설명합니다.
 
 **Table 1: Files of a backend and their purposes.**
 
@@ -186,14 +186,14 @@ By following the commands in the previous section, we derive a new backend Foo a
 
 ### 4.1. Extending ONNC IR for Unsupported Operators
 
-To support the target-specific operators that does not exist in the default ONNC IR, please refer to the application note, [ONNC IR Extension Guide](ONNC-IR-Extension-Guide.md), for more details.
+기본 ONNC IR에 존재하지 않는 대상별 연산자 지원에 대한 자세한 내용은 [ONNC IR 확장 가이드](ONNC-IR-Extension-Guide.md) 애플리케이션 노트를 참조하십시오.
 
 ### 4.2. Handling code generation in the `codeEmit` pass
-The `codeEmit` pass is added to handle code generation for the target backend. Please refer to [The Code Emitting Pass User Guide](The-Code-Emitting-Pass-User-Guide.md) for more details.
+대상 백엔드에 대한 코드 생성을 처리하기 위해 `codeEmit` 패스가 추가되었습니다. 자세한 사항은 [The Code Emitting Pass User Guide](The-Code-Emitting-Pass-User-Guide.md)를 참고하시기 바랍니다.
 
 ### 4.3. Adding optimization passes
 
-The generated backend has included some optimization algorithms by default. Each algorithm is implemented in ONNC as a “pass” (the same concept as the LLVM pass). The default optimization passes may not fit your need so you need to develop your own passes and then edit `FooBackend.cpp` to add those passes into the compilation flow. Below is an example of adding a pass. Refer to the application note, [Pass Manager Getting Started Guide](ONNC-Pass-Manager-Getting-Started-Guide.md),  for more details about how to add a pass.
+생성된 백엔드는 기본적으로 일부 최적화 알고리즘을 포함하고 있습니다. 각 알고리즘은 ONNC에서 "통과"(LLVM 통과와 동일한 개념)로 구현됩니다. 기본 최적화 패스는 필요에 맞지 않을 수 있으므로 고유한 패스를 개발한 다음 `FooBackend.cpp`를 편집하여 해당 패스를 컴파일 흐름에 추가해야 합니다. 다음은 패스를 추가하는 예입니다. 자세한 패스 추가 방법은 애플리케이션 노트 [패스 매니저 시작하기 가이드](ONNC-Pass-Manager-Getting-Started-Guide.md)를 참조하세요.
 
 ```cpp
 void FooBackend::addOnncIrOptimization(PassManager& pPM, OptimizationOptions& options)
@@ -205,35 +205,34 @@ void FooBackend::addOnncIrOptimization(PassManager& pPM, OptimizationOptions& op
 ```
 **Code Snippet 2. Example of adding an optimization pass into a backend.**
  
-In the above example, the optimization pass is added in the method, `addOnncIrOptimization()`. There are five stages in the compilation flow for users to add passes. Each stage in the compilation flow is implemented in a corresponding method. The following table shows the meaning and input/output of each method. 
+위의 예에서 `addOnncIrOptimization()` 메서드에 최적화 패스가 추가되었습니다. 사용자가 패스를 추가할 수 있는 컴파일 흐름에는 5단계가 있습니다. 컴파일 흐름의 각 단계는 해당 메서드에서 구현됩니다. 다음 표는 각 메소드의 의미와 입/출력을 보여줍니다.
 
 **Table 2. The five methods representing the five compilation phases.**
 
 | Method | Input | Output | Description |
 | ------ | ----- | ------ | ----------- |
-| `addTensorSel` | **ONNX IR** | **ONNC IR** | This method contains passes for translating models in the ONNX format into ONNC IR. |
-| `addOnncIrOptimization` | **ONNC IR** | **ONNC IR** in optimized order | This method contains passes for optimizing ONNC IR in order to better performance. |
-| `addTensorSched` | **ONNC IR** in optimized order | **ONNC IR** in optimized order | This method contains passes for better scheduling the execution order of ONNC IR. |
-| `addMemAlloc` | **ONNC IR** in optimized order | **ONNC IR** with addresses | This method contains passes for allocating memory space of input data, weights, and activation data. |
-| `addCodeEmit` | **ONNC IR** with address | **Machine codes** | This method contains passes for handling code generation and optimization. |
+| `addTensorSel` | **ONNX IR** | **ONNC IR** | 이 메서드에는 ONNX 형식의 모델을 ONNC IR로 변환하기 위한 패스가 포함되어 있습니다. |
+| `addOnncIrOptimization` | **ONNC IR** | **ONNC IR** in optimized order | 이 메서드에는 성능 향상을 위해 ONNC IR을 최적화하기 위한 패스가 포함되어 있습니다. |
+| `addTensorSched` | **ONNC IR** in optimized order | **ONNC IR** in optimized order | 이 메서드에는 ONNC IR의 실행 순서를 더 잘 예약하기 위한 패스가 포함되어 있습니다. |
+| `addMemAlloc` | **ONNC IR** in optimized order | **ONNC IR** with addresses | 이 메서드에는 입력 데이터, 가중치 및 활성화 데이터의 메모리 공간을 할당하기 위한 패스가 포함되어 있습니다. |
+| `addCodeEmit` | **ONNC IR** with address | **Machine codes** | 이 메서드에는 코드 생성 및 최적화를 처리하기 위한 패스가 포함되어 있습니다. |
 
-ONNC provides a couple of basic optimization passes by default. They are listed in the following table. 
+ONNC는 기본적으로 몇 가지 기본 최적화 단계를 제공합니다. 다음 표에 나열되어 있습니다.
 
 **Table 3. The default passes in each optimization phase.**
 
 | Method | Default passes | Description |
 | ------ | -------------- | ----------- |
-| `addTensorSel` | `addStandardTensorSel` | This pass translates models in the ONNX format into ONNC IR. |
+| `addTensorSel` | `addStandardTensorSel` | 이 패스는 ONNX 형식의 모델을 ONNC IR로 변환합니다. |
 | `addTensorSched` | N/A | |
-| `addMemAlloc` | `addStandardCreateLiveIntervals` | This pass calculates the liveness intervals of tensors (input/output of operators). |
-| `addMemAlloc` | `addStandardMemoryAllocation` | This pass allocates addresses for tensors with the consideration of tensors’ liveness intervals. |
-| `addMemAlloc` | `addStandardSetMemOperands` | This pass saves the result of memory allocation to an internal data structure called `MemoryOperand` so that the result can be accessed by other passes. |
-| `addCodeEmit` | `CodeEmit` | This pass generates the target machine codes. Note that this pass initially is just empty, which needs backend developers to add target-dependent implementation. |
+| `addMemAlloc` | `addStandardCreateLiveIntervals` | 이 패스는 텐서(연산자의 입력/출력)의 활성 간격을 계산합니다. |
+| `addMemAlloc` | `addStandardMemoryAllocation` | 이 패스는 텐서의 활성 간격을 고려하여 텐서에 대한 주소를 할당합니다. |
+| `addMemAlloc` | `addStandardSetMemOperands` | 이 패스는 메모리 할당 결과를 'MemoryOperand'라는 내부 데이터 구조에 저장하여 다른 패스에서 결과에 액세스할 수 있도록 합니다. |
+| `addCodeEmit` | `CodeEmit` | 이 패스는 대상 머신 코드를 생성합니다. 이 패스는 처음에는 비어 있으며 백엔드 개발자가 대상 종속 구현을 추가해야 합니다. |
 
 ### 4.4. Rebuilding ONNC 
-After all modification is done in the new backend, remember to rebuild ONNC by following the steps in Section 2.4. 
-
+새 백엔드에서 모든 수정이 완료되면 섹션 2.4의 단계에 따라 ONNC를 다시 빌드해야 합니다.
 
 ----
 
-<b id="quadruple">[1]</b>: `Quadruple` in ONNC is a string used for encapsulating backend information. The string can contain rich target information such as version, vendor, operating system, toolchain, and etc. A funny example is `-mquadruple foo-apple-darwin-gnu-ar-0.9.3-onnc-ca7`. Here we set our quadruple string to contain only one information: a special name `foo` to represent the target backend. This is also the minimum requirement of such a string. [↩](#quadruple-1)
+<b id="quadruple">[1]</b>: ONNC의 'Quadruple'은 백엔드 정보를 캡슐화하는 데 사용되는 문자열입니다. 문자열에는 버전, 공급업체, 운영 체제, 도구 체인 등과 같은 풍부한 대상 정보가 포함될 수 있습니다. 재미있는 예는 `-mquadruple foo-apple-darwin-gnu-ar-0.9.3-onnc-ca7`입니다. 여기서 우리는 하나의 정보만 포함하도록 4중 문자열을 설정합니다. 대상 백엔드를 나타내는 특수 이름 `foo`입니다. 이는 이러한 문자열의 최소 요구 사항이기도 합니다. [↩](#quadruple-1)
