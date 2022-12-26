@@ -2,7 +2,7 @@
 
 릴리스 PDF: [ONNC-Backend-Developer-Guide.pdf](https://github.com/ONNC/onnc/wiki/files/1.0.0/ONNC-Backend-Porting-Guide.pdf)
 
-이 애플리케이션 노트는 대상 하드웨어에 대한 ONNC 백엔드를 생성하는 방법을 보여줍니다. 이 문서는 ONNC 커뮤니티 Docker 이미지 v1.0을 준수합니다. Docker 허브(https://hub.docker.com/r/onnc/onnc-community/)에서 Docker 이미지를 다운로드할 수 있습니다.
+이 애플리케이션 노트는 대상 하드웨어에 대한 ONNC 백엔드를 생성하는 방법을 보여줍니다. 이 문서는 ONNC 커뮤니티 Docker 이미지 v1.0을 준수합니다. Docker 허브(https://hub.docker.com/r/onnc/onnc-community/) 에서 Docker 이미지를 다운로드할 수 있습니다.
 
 ## 1. Introduction
 
